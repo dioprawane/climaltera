@@ -1,0 +1,13 @@
+services:
+  app:
+    build: .
+    ports:
+      - "5173:5173"
+    volumes:
+      # Monte le code source pour le hot-reload
+      - .:/app
+      # Garde node_modules dans le conteneur (évite les conflits Windows/Linux)
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: npm run dev -- --host

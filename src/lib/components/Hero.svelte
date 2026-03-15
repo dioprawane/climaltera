@@ -1,0 +1,331 @@
+<script lang="ts">
+	import { onMount, onDestroy } from 'svelte';
+
+	// Partner data
+	const partners = [
+		{ type: 'award', name: 'App of the Day' },
+		{ type: 'logo', name: 'LogoIpsum' },
+		{ type: 'logo', name: 'EcoTech' },
+		{ type: 'logo', name: 'GreenCorp' },
+		{ type: 'logo', name: 'ClimateFirst' },
+		{ type: 'bcorp', name: 'B Corporation' },
+		{ type: 'logo', name: 'Sustainable Co' },
+		{ type: 'logo', name: 'Carbon Zero' }
+	];
+
+	// Carousel state
+	let currentPartnerIndex = $state(0);
+	let carouselContainer: HTMLElement;
+	let autoScrollInterval: ReturnType<typeof setInterval> | null = null;
+	let isAutoScrollPaused = $state(false);
+	let partnersToShow = $state(4); // Desktop par défaut
+
+	// Auto-scroll functionality
+	function startAutoScroll() {
+		autoScrollInterval = setInterval(() => {
+			if (!isAutoScrollPaused) {
+				currentPartnerIndex = (currentPartnerIndex + 1) % partners.length;
+			}
+		}, 3000); // Change toutes les 3 secondes
+	}
+
+	function pauseAutoScroll() {
+		isAutoScrollPaused = true;
+	}
+
+	function resumeAutoScroll() {
+		isAutoScrollPaused = false;
+	}
+
+	// Navigation functions
+	function navigateCarousel(direction: 'prev' | 'next') {
+		if (direction === 'next') {
+			currentPartnerIndex = (currentPartnerIndex + 1) % partners.length;
+		} else {
+			currentPartnerIndex = (currentPartnerIndex - 1 + partners.length) % partners.length;
+		}
+	}
+
+	function goToSlide(slideIndex: number) {
+		currentPartnerIndex = slideIndex * partnersToShow;
+	}
+
+	// Responsive partners count
+	function updatePartnersToShow() {
+		if (typeof window !== 'undefined') {
+			const width = window.innerWidth;
+			if (width < 640) {
+				partnersToShow = 2; // Mobile
+			} else if (width < 1024) {
+				partnersToShow = 3; // Tablet
+			} else {
+				partnersToShow = 4; // Desktop
+			}
+		}
+	}
+
+	onMount(() => {
+		updatePartnersToShow();
+		window.addEventListener('resize', updatePartnersToShow);
+		startAutoScroll();
+		
+		return () => {
+			window.removeEventListener('resize', updatePartnersToShow);
+		};
+	});
+
+	onDestroy(() => {
+		if (autoScrollInterval) {
+			clearInterval(autoScrollInterval);
+		}
+	});
+</script>
+
+<section class="bg-cream px-4 pt-28 pb-20 sm:px-6 lg:px-8">
+	<div class="mx-auto max-w-7xl">
+		<!-- Separator Line -->
+		<div class="mb-12 h-px w-full bg-gradient-to-r from-transparent via-primary-400 to-transparent"></div>
+
+		<div class="grid items-center gap-12 lg:grid-cols-2">
+			<!-- Left Content -->
+			<div>
+				<h1 class="mb-6 text-4xl font-bold leading-tight text-gray-900 md:text-5xl lg:text-6xl">
+					Anticiper les risques
+					<span class="text-primary-500">climatiques</span> au moins
+					<span class="relative inline-block">
+						<span class="relative z-10 text-primary-500">12%</span>
+						<svg class="absolute -inset-2 -z-0 h-full w-full" viewBox="0 0 100 60" preserveAspectRatio="none">
+							<ellipse cx="50" cy="30" rx="48" ry="25" fill="none" stroke="#a7f3d0" stroke-width="3" />
+						</svg>
+					</span>
+					<span class="text-primary-500">annuellement</span>
+				</h1>
+
+				<p class="mb-8 max-w-lg text-lg text-gray-600">
+					ClimAltera accompagne les PME dans la compréhension, l'anticipation et la maîtrise de leurs enjeux climatiques et environnementaux.
+				</p>
+
+				<!-- Contact -->
+				<div class="flex flex-col items-start gap-4 sm:flex-row">
+					<div class="flex items-center gap-2 rounded-full border border-gray-300 bg-white px-5 py-3">
+						<span class="text-gray-500">(+1) 123 456 789</span>
+					</div>
+					<a
+						href="#contact"
+						class="rounded-full bg-primary-500 px-7 py-3 font-medium text-white transition-all hover:bg-primary-600 hover:shadow-lg"
+					>
+						Nous contacter
+					</a>
+				</div>
+			</div>
+
+			<!-- Right - App Mockup -->
+			<div class="relative flex justify-center lg:justify-end">
+				<!-- Floating Badge Top -->
+				<div class="absolute top-0 left-0 z-20 flex items-center gap-2 rounded-full bg-white px-4 py-2 shadow-lg lg:left-10">
+					<div class="flex h-8 w-8 items-center justify-center rounded-full bg-primary-100">
+						<svg class="h-4 w-4 text-primary-600" fill="currentColor" viewBox="0 0 24 24">
+							<path d="M12 2l2.4 7.4h7.6l-6 4.6 2.3 7-6.3-4.6-6.3 4.6 2.3-7-6-4.6h7.6z" />
+						</svg>
+					</div>
+					<span class="text-sm font-medium text-gray-700">Projets adaptés à vous</span>
+				</div>
+
+				<!-- Phone Mockup Container -->
+				<div class="relative z-10 mt-8" style="width: 357px; height: 593px;">
+					<!-- Phone Frame SVG Background -->
+					<svg class="absolute inset-0 h-full w-full" viewBox="0 0 357 593" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<!-- Phone body -->
+						<rect x="0" y="0" width="357" height="593" rx="40" fill="#047857" />
+						<!-- Inner screen area -->
+						<rect x="15" y="15" width="327" height="563" rx="28" fill="white" />
+					</svg>
+
+					<!-- Content inside phone -->
+					<div class="absolute inset-0 flex flex-col" style="padding: 15px;">
+						<div class="flex-1 overflow-hidden rounded-[28px] bg-white">
+							<!-- Project Image -->
+							<div 
+								class="relative overflow-hidden"
+								style="width: 327px; height: 218px; border-radius: 14px 14px 0 0;"
+							>
+								<img
+									src="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=654&h=436&fit=crop"
+									alt="Ferme solaire dans les Alpes"
+									class="h-full w-full object-cover"
+								/>
+							</div>
+
+							<!-- Project Details -->
+							<div class="p-4">
+								<!-- Credits & Funding -->
+								<div class="mb-3 flex items-center justify-between">
+									<div class="flex items-center gap-1 text-sm">
+										<svg class="h-4 w-4 text-primary-500" fill="currentColor" viewBox="0 0 24 24">
+											<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+										</svg>
+										<span class="font-medium text-primary-600">14 crédits</span>
+										<span class="text-gray-400">/ tonne CO₂</span>
+									</div>
+									<span class="text-sm font-medium text-primary-500">88% financé</span>
+								</div>
+
+								<!-- Progress Bar -->
+								<div class="mb-4 h-1.5 w-full overflow-hidden rounded-full bg-gray-200">
+									<div class="h-full w-[88%] rounded-full bg-primary-500"></div>
+								</div>
+
+								<!-- Project Title -->
+								<h3 class="mb-4 font-bold text-gray-900">
+									Centrale solaire d'altitude dans les Alpes suisses
+								</h3>
+
+								<!-- Stats Grid -->
+								<div class="grid grid-cols-2 gap-2">
+									<div class="rounded-lg bg-gray-50 p-2.5">
+										<div class="flex items-center gap-1.5">
+											<svg class="h-3.5 w-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+											</svg>
+											<span class="text-sm font-medium text-gray-700">2 ans</span>
+										</div>
+										<p class="mt-0.5 text-xs text-gray-400">Durée</p>
+									</div>
+									<div class="rounded-lg bg-gray-50 p-2.5">
+										<div class="flex items-center gap-1.5">
+											<svg class="h-3.5 w-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+											</svg>
+											<span class="text-sm font-medium text-gray-700">8.4%</span>
+										</div>
+										<p class="mt-0.5 text-xs text-gray-400">Intérêt annuel</p>
+									</div>
+									<div class="rounded-lg bg-gray-50 p-2.5">
+										<div class="flex items-center gap-1.5">
+											<svg class="h-3.5 w-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+											</svg>
+											<span class="text-sm font-medium text-gray-700">750K€</span>
+										</div>
+										<p class="mt-0.5 text-xs text-gray-400">Objectif</p>
+									</div>
+									<div class="rounded-lg bg-gray-50 p-2.5">
+										<div class="flex items-center gap-1.5">
+											<svg class="h-3.5 w-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+											</svg>
+											<span class="text-sm font-medium text-gray-700">12,604</span>
+										</div>
+										<p class="mt-0.5 text-xs text-gray-400">Investisseurs</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Floating Badge Bottom -->
+				<div class="absolute right-0 bottom-20 z-20 flex items-center gap-2 rounded-full bg-white px-4 py-2 shadow-lg lg:right-0">
+					<div class="flex h-8 w-8 items-center justify-center rounded-full bg-primary-100">
+						<svg class="h-4 w-4 text-primary-600" fill="currentColor" viewBox="0 0 24 24">
+							<path d="M12 2l2.4 7.4h7.6l-6 4.6 2.3 7-6.3-4.6-6.3 4.6 2.3-7-6-4.6h7.6z" />
+						</svg>
+					</div>
+					<span class="text-sm font-medium text-gray-700">Suivez votre impact</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- Partners Carousel Section -->
+		<div class="mt-20 flex flex-col items-center gap-8">
+			<p class="max-w-lg text-center text-gray-600">
+				ClimAltera accompagne les PME dans leur transition écologique et la gestion des risques climatiques.
+			</p>
+
+			<!-- Partners Carousel -->
+			<div class="relative w-full">
+				<div class="overflow-hidden py-4">
+					<!-- Navigation Buttons -->
+					<div class="absolute left-0 top-1/2 z-10 -translate-y-1/2">
+						<button
+							onclick={() => navigateCarousel('prev')}
+							class="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md transition-all hover:bg-gray-50 hover:shadow-lg"
+							aria-label="Partenaire précédent"
+						>
+							<svg class="h-5 w-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+							</svg>
+						</button>
+					</div>
+					<div class="absolute right-0 top-1/2 z-10 -translate-y-1/2">
+						<button
+							onclick={() => navigateCarousel('next')}
+							class="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md transition-all hover:bg-gray-50 hover:shadow-lg"
+							aria-label="Partenaire suivant"
+						>
+							<svg class="h-5 w-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+							</svg>
+						</button>
+					</div>
+
+					<!-- Carousel Container -->
+					<div 
+						bind:this={carouselContainer}
+						role="region"
+						aria-label="Carrousel des partenaires"
+						class="flex justify-center transition-transform duration-500 ease-in-out px-14"
+						style="transform: translateX(-{currentPartnerIndex * 280}px);"
+						onmouseenter={() => pauseAutoScroll()}
+						onmouseleave={() => resumeAutoScroll()}
+					>
+						{#each partners as partner, index}
+							<div class="flex-shrink-0 w-64 flex items-center justify-center">
+								{#if partner.type === 'award'}
+									<div class="flex flex-col items-center">
+										<div class="mb-3 flex h-20 w-20 items-center justify-center rounded-xl bg-gradient-to-br from-yellow-400 to-yellow-600 text-white shadow-lg">
+											<svg class="h-10 w-10" fill="currentColor" viewBox="0 0 24 24">
+												<path d="M12 2l2.4 7.4h7.6l-6 4.6 2.3 7-6.3-4.6-6.3 4.6 2.3-7-6-4.6h7.6z" />
+											</svg>
+										</div>
+										<span class="text-sm font-medium text-gray-600 text-center">APP OF<br/>THE DAY</span>
+									</div>
+								{:else if partner.type === 'bcorp'}
+									<div class="flex flex-col items-center">
+										<div class="mb-3 flex h-20 w-20 items-center justify-center rounded-full border-2 border-primary-500 bg-white text-2xl font-bold text-primary-600 shadow-lg">
+											B
+										</div>
+										<span class="text-sm font-medium text-gray-600 text-center">Certified<br/>B Corp</span>
+									</div>
+								{:else}
+									<div class="flex flex-col items-center">
+										<div class="mb-3 flex h-20 w-20 items-center justify-center rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 shadow-lg">
+											<svg class="h-10 w-10 text-gray-500" viewBox="0 0 24 24" fill="currentColor">
+												<circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2" />
+												<circle cx="12" cy="12" r="3" />
+											</svg>
+										</div>
+										<span class="text-sm font-medium text-gray-600 text-center">{partner.name}</span>
+									</div>
+								{/if}
+							</div>
+						{/each}
+					</div>
+
+					<!-- Pagination Dots -->
+					<div class="mt-6 flex justify-center gap-2">
+						{#each partners as _, index}
+							<button
+								class="h-2.5 w-2.5 rounded-full transition-all {currentPartnerIndex === index
+									? 'bg-primary-500 scale-110'
+									: 'bg-gray-300 hover:bg-gray-400'}"
+								onclick={() => { currentPartnerIndex = index; }}
+								aria-label="Aller au partenaire {index + 1}"
+							></button>
+						{/each}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
