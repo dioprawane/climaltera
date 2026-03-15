@@ -30,14 +30,14 @@ COPY --from=builder /app/package.json ./
 
 # Variables d'environnement
 ENV NODE_ENV=production
-ENV PORT=3400
+ENV PORT=3600
 ENV ORIGIN=https://climaltera.com
 
-EXPOSE 3400
+EXPOSE 3600
 
 # Healthcheck
 HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
-  CMD wget -q --spider http://localhost:3400/ || exit 1
+  CMD wget -q --spider http://localhost:3600/ || exit 1
 
 # Lancer le serveur Node
 CMD ["node", "build"]

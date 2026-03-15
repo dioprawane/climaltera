@@ -6,13 +6,13 @@ services:
     container_name: climaltera
     restart: unless-stopped
     ports:
-      - "3400:3400"
+      - "3600:3600"
     environment:
       - NODE_ENV=production
-      - PORT=3400
+      - PORT=3600
       - ORIGIN=https://climaltera.com
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3400/"]
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3600/"]
       interval: 30s
       timeout: 5s
       retries: 3
