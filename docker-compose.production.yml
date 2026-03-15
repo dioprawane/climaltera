@@ -1,0 +1,18 @@
+services:
+  climaltera:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+    container_name: climaltera
+    restart: unless-stopped
+    ports:
+      - "3400:3400"
+    environment:
+      - NODE_ENV=production
+      - PORT=3400
+      - ORIGIN=https://climaltera.com
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3400/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

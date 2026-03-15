@@ -1,0 +1,43 @@
+# =========================
+# Stage 1 : Build
+# =========================
+FROM node:24-alpine AS builder
+
+WORKDIR /app
+
+# Dépendances
+COPY package*.json ./
+RUN npm ci
+
+# Code source + build
+COPY . .
+RUN npm run build
+
+# Nettoyer les devDependencies
+RUN npm prune --omit=dev
+
+# =========================
+# Stage 2 : Production
+# =========================
+FROM node:24-alpine
+
+WORKDIR /app
+
+# Copier uniquement le nécessaire
+COPY --from=builder /app/build ./build
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./
+
+# Variables d'environnement
+ENV NODE_ENV=production
+ENV PORT=3400
+ENV ORIGIN=https://climaltera.com
+
+EXPOSE 3400
+
+# Healthcheck
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
+  CMD wget -q --spider http://localhost:3400/ || exit 1
+
+# Lancer le serveur Node
+CMD ["node", "build"]

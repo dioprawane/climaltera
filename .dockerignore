@@ -9,4 +9,8 @@ build
 .gitignore
 README.md
 Dockerfile
+Dockerfile.production
 docker-compose.yml
+docker-compose.production.yml
+deploy.sh
+nginx
