@@ -8,8 +8,8 @@
 set -e
 
 APP_NAME="climaltera"
-APP_DIR="/opt/$APP_NAME"
-REPO_URL="https://github.com/VOTRE_USERNAME/Climaltera.git"  # ← À remplacer
+APP_DIR="/home/ubuntu/$APP_NAME"
+REPO_URL="git@github.com:dioprawane/climaltera.git"  # ← À remplacer
 DOMAIN="climaltera.com"
 NGINX_CONF="/etc/nginx/sites-available/$DOMAIN"
 
@@ -52,15 +52,15 @@ done
 # --- 4. Config Nginx (seulement au premier déploiement) ---
 if [ ! -f "$NGINX_CONF" ]; then
     echo "🌐 Installation de la config Nginx..."
-    cp "$APP_DIR/nginx/$DOMAIN.conf" "$NGINX_CONF"
-    ln -sf "$NGINX_CONF" "/etc/nginx/sites-enabled/$DOMAIN"
+    sudo cp "$APP_DIR/nginx/$DOMAIN.conf" "$NGINX_CONF"
+    sudo ln -sf "$NGINX_CONF" "/etc/nginx/sites-enabled/$DOMAIN"
 
     # Tester la config avant de recharger
-    nginx -t
+    sudo nginx -t
 
     # D'abord, config HTTP uniquement pour Certbot
     # On remplace temporairement la config pour ne garder que le bloc :80
-    cat > "$NGINX_CONF" << 'TMPCONF'
+    sudo tee "$NGINX_CONF" > /dev/null << 'TMPCONF'
 server {
     listen 80;
     listen [::]:80;
@@ -77,21 +77,21 @@ server {
 }
 TMPCONF
 
-    nginx -t && systemctl reload nginx
+    sudo nginx -t && sudo systemctl reload nginx
 
     # --- 5. SSL avec Certbot ---
     echo "🔒 Obtention du certificat SSL..."
-    certbot --nginx -d "$DOMAIN" -d "www.$DOMAIN" --non-interactive --agree-tos --email contact@climaltera.com
+    sudo certbot --nginx -d "$DOMAIN" -d "www.$DOMAIN" --non-interactive --agree-tos --email contact@climaltera.com
 
     # Remettre la config complète
-    cp "$APP_DIR/nginx/$DOMAIN.conf" "$NGINX_CONF"
-    nginx -t && systemctl reload nginx
+    sudo cp "$APP_DIR/nginx/$DOMAIN.conf" "$NGINX_CONF"
+    sudo nginx -t && sudo systemctl reload nginx
 
     echo "🔒 SSL activé !"
 else
     echo "🌐 Config Nginx déjà en place, rechargement..."
-    cp "$APP_DIR/nginx/$DOMAIN.conf" "$NGINX_CONF"
-    nginx -t && systemctl reload nginx
+    sudo cp "$APP_DIR/nginx/$DOMAIN.conf" "$NGINX_CONF"
+    sudo nginx -t && sudo systemctl reload nginx
 fi
 
 echo ""
