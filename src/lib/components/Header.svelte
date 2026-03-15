@@ -4,9 +4,12 @@
 	let mobileMenuOpen = $state(false);
 
 	const navLinks = [
-		{ href: '/#services', label: 'Projets climat' },
-		{ href: '/#methodology', label: 'Comment ça marche' },
-		{ href: '/#locations', label: 'Localisations' }
+		{ href: '/#services', label: 'Services' },
+		{ href: '/#methodology', label: 'Méthodologie' },
+		{ href: '/#locations', label: 'Secteurs' },
+		{ href: '/#diagnostic', label: 'Mini-diagnostic' },
+		{ href: '/a-propos', label: 'À propos' },
+		{ href: '/#contact', label: 'Contact' }
 	];
 </script>
 

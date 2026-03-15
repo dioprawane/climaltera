@@ -5,22 +5,44 @@
 
 	let name = $state('');
 	let email = $state('');
-	let phone = $state('');
 	let company = $state('');
-	let selectedService = $state('');
+	let sector = $state('');
+	let companySize = $state('');
+	let need = $state('');
 	let message = $state('');
 	let submitted = $state(false);
 
+	const sectors = [
+		'Industrie / Manufacturing',
+		'BTP / Construction',
+		'Transport / Logistique',
+		'Agroalimentaire',
+		'Commerce / Distribution',
+		'Services / Tertiaire',
+		'Santé',
+		'Énergie',
+		'Tourisme / Hôtellerie',
+		'Autre'
+	];
+
+	const companySizes = [
+		'1 – 10 salariés',
+		'11 – 50 salariés',
+		'51 – 150 salariés',
+		'151 – 250 salariés',
+		'250+ salariés'
+	];
+
 	function handleSubmit(e: SubmitEvent) {
 		e.preventDefault();
-		// TODO: intégrer un vrai backend
+		// TODO: intégrer un vrai backend (Formspree, Resend, etc.)
 		submitted = true;
 	}
 </script>
 
 <svelte:head>
-	<title>Demander un devis — ClimAltera</title>
-	<meta name="description" content="Demandez un devis personnalisé pour nos services d'accompagnement climatique." />
+	<title>Nous contacter — ClimAltera</title>
+	<meta name="description" content="Contactez ClimAltera pour un diagnostic climat, un bilan carbone ou un accompagnement RSE adapté à votre PME." />
 </svelte:head>
 
 <Header />
@@ -38,12 +60,12 @@
 			Retour à l'accueil
 		</a>
 
-		<div class="max-w-2xl">
+		<div class="max-w-3xl">
 			<h1 class="mb-4 text-4xl font-bold text-gray-900 md:text-5xl">
-				Demander un devis
+				Parlons de votre projet
 			</h1>
 			<p class="text-lg text-gray-600">
-				Remplissez le formulaire ci-dessous et notre équipe vous recontactera sous 48h avec une proposition personnalisée.
+				Quelques informations sur votre entreprise suffisent pour que nous puissions vous proposer un accompagnement sur-mesure. Réponse sous 48h.
 			</p>
 		</div>
 	</section>
@@ -59,9 +81,9 @@
 							<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
 						</svg>
 					</div>
-					<h2 class="mb-3 text-2xl font-bold text-gray-900">Demande envoyée !</h2>
+					<h2 class="mb-3 text-2xl font-bold text-gray-900">Message envoyé !</h2>
 					<p class="mb-8 text-gray-600">
-						Merci pour votre demande. Notre équipe vous recontactera dans les plus brefs délais.
+						Merci pour votre demande. Nous reviendrons vers vous sous 48h avec une réponse personnalisée.
 					</p>
 					<a
 						href="/"
@@ -71,11 +93,14 @@
 					</a>
 				</div>
 			{:else}
-				<!-- Form -->
-				<form onsubmit={handleSubmit} class="space-y-8">
-					<!-- Identity -->
-					<div>
-						<h2 class="mb-6 text-xl font-semibold text-gray-900">Vos informations</h2>
+				<form onsubmit={handleSubmit} class="space-y-10">
+
+					<!-- 1. Identité -->
+					<fieldset>
+						<legend class="mb-6 flex items-center gap-3 text-xl font-semibold text-gray-900">
+							<span class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-100 text-sm font-bold text-primary-700">1</span>
+							Vos coordonnées
+						</legend>
 						<div class="grid gap-5 sm:grid-cols-2">
 							<div>
 								<label for="name" class="mb-1.5 block text-sm font-medium text-gray-700">Nom complet *</label>
@@ -89,7 +114,28 @@
 								/>
 							</div>
 							<div>
-								<label for="company" class="mb-1.5 block text-sm font-medium text-gray-700">Entreprise *</label>
+								<label for="email" class="mb-1.5 block text-sm font-medium text-gray-700">Email professionnel *</label>
+								<input
+									id="email"
+									type="email"
+									required
+									bind:value={email}
+									placeholder="jean@entreprise.com"
+									class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-200"
+								/>
+							</div>
+						</div>
+					</fieldset>
+
+					<!-- 2. Entreprise -->
+					<fieldset>
+						<legend class="mb-6 flex items-center gap-3 text-xl font-semibold text-gray-900">
+							<span class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-100 text-sm font-bold text-primary-700">2</span>
+							Votre entreprise
+						</legend>
+						<div class="grid gap-5 sm:grid-cols-2">
+							<div>
+								<label for="company" class="mb-1.5 block text-sm font-medium text-gray-700">Nom de l'entreprise *</label>
 								<input
 									id="company"
 									type="text"
@@ -100,73 +146,109 @@
 								/>
 							</div>
 							<div>
-								<label for="email" class="mb-1.5 block text-sm font-medium text-gray-700">Email *</label>
-								<input
-									id="email"
-									type="email"
+								<label for="sector" class="mb-1.5 block text-sm font-medium text-gray-700">Secteur d'activité *</label>
+								<select
+									id="sector"
 									required
-									bind:value={email}
-									placeholder="jean@entreprise.com"
+									bind:value={sector}
 									class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-200"
-								/>
+								>
+									<option value="" disabled>Choisir un secteur</option>
+									{#each sectors as s}
+										<option value={s}>{s}</option>
+									{/each}
+								</select>
 							</div>
-							<div>
-								<label for="phone" class="mb-1.5 block text-sm font-medium text-gray-700">Téléphone</label>
-								<input
-									id="phone"
-									type="tel"
-									bind:value={phone}
-									placeholder="(+33) 6 12 34 56 78"
-									class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-200"
-								/>
+							<div class="sm:col-span-2">
+								<label for="companySize" class="mb-1.5 block text-sm font-medium text-gray-700">Taille de l'entreprise *</label>
+								<div class="grid grid-cols-2 gap-3 sm:grid-cols-5">
+									{#each companySizes as size}
+										<label
+											class="flex cursor-pointer items-center justify-center rounded-xl border-2 px-3 py-2.5 text-center text-sm font-medium transition-all {companySize === size
+												? 'border-primary-500 bg-primary-50 text-primary-700'
+												: 'border-gray-200 text-gray-600 hover:border-primary-200 hover:bg-gray-50'}"
+										>
+											<input
+												type="radio"
+												name="companySize"
+												value={size}
+												bind:group={companySize}
+												class="sr-only"
+											/>
+											{size}
+										</label>
+									{/each}
+								</div>
 							</div>
 						</div>
-					</div>
+					</fieldset>
 
-					<!-- Service Selection -->
-					<div>
-						<h2 class="mb-6 text-xl font-semibold text-gray-900">Service souhaité</h2>
-						<div class="grid gap-3 sm:grid-cols-2">
-							{#each services as service}
+					<!-- 3. Besoin -->
+					<fieldset>
+						<legend class="mb-6 flex items-center gap-3 text-xl font-semibold text-gray-900">
+							<span class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-100 text-sm font-bold text-primary-700">3</span>
+							Votre besoin
+						</legend>
+
+						<div class="mb-6">
+							<label for="need" class="mb-1.5 block text-sm font-medium text-gray-700">Besoin principal *</label>
+							<div class="grid gap-3 sm:grid-cols-2">
+								{#each services as service}
+									<label
+										class="flex cursor-pointer items-start gap-3 rounded-xl border-2 p-4 transition-all {need === service.slug
+											? 'border-primary-500 bg-primary-50'
+											: 'border-gray-200 hover:border-primary-200 hover:bg-gray-50'}"
+									>
+										<input
+											type="radio"
+											name="need"
+											value={service.slug}
+											bind:group={need}
+											class="mt-0.5 accent-primary-600"
+										/>
+										<div>
+											<span class="block text-sm font-semibold text-gray-900">{service.title}</span>
+											<span class="text-xs text-gray-500">{service.category}</span>
+										</div>
+									</label>
+								{/each}
 								<label
-									class="flex cursor-pointer items-start gap-3 rounded-xl border-2 p-4 transition-all {selectedService === service.slug
+									class="flex cursor-pointer items-start gap-3 rounded-xl border-2 p-4 transition-all {need === 'autre'
 										? 'border-primary-500 bg-primary-50'
 										: 'border-gray-200 hover:border-primary-200 hover:bg-gray-50'}"
 								>
 									<input
 										type="radio"
-										name="service"
-										value={service.slug}
-										bind:group={selectedService}
+										name="need"
+										value="autre"
+										bind:group={need}
 										class="mt-0.5 accent-primary-600"
 									/>
 									<div>
-										<span class="block text-sm font-semibold text-gray-900">{service.title}</span>
-										<span class="text-xs text-gray-500">{service.category}</span>
+										<span class="block text-sm font-semibold text-gray-900">Autre / Je ne sais pas encore</span>
+										<span class="text-xs text-gray-500">Nous vous orienterons</span>
 									</div>
 								</label>
-							{/each}
+							</div>
 						</div>
-					</div>
 
-					<!-- Message -->
-					<div>
-						<h2 class="mb-6 text-xl font-semibold text-gray-900">Votre projet</h2>
-						<label for="message" class="mb-1.5 block text-sm font-medium text-gray-700">
-							Décrivez brièvement votre besoin
-						</label>
-						<textarea
-							id="message"
-							rows="5"
-							bind:value={message}
-							placeholder="Parlez-nous de votre entreprise, vos objectifs et vos contraintes..."
-							class="w-full resize-none rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-200"
-						></textarea>
-					</div>
+						<div>
+							<label for="message" class="mb-1.5 block text-sm font-medium text-gray-700">
+								Message (contexte, contraintes, questions…)
+							</label>
+							<textarea
+								id="message"
+								rows="4"
+								bind:value={message}
+								placeholder="Décrivez brièvement votre situation, vos objectifs et vos éventuelles contraintes…"
+								class="w-full resize-none rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-200"
+							></textarea>
+						</div>
+					</fieldset>
 
 					<!-- Submit -->
-					<div class="flex flex-col items-center gap-4 pt-4 sm:flex-row sm:justify-between">
-						<p class="text-sm text-gray-500">* Champs obligatoires</p>
+					<div class="flex flex-col items-center gap-4 border-t border-gray-100 pt-8 sm:flex-row sm:justify-between">
+						<p class="text-sm text-gray-500">* Champs obligatoires — Vos données ne seront jamais partagées.</p>
 						<button
 							type="submit"
 							class="w-full rounded-full bg-primary-600 px-10 py-3.5 text-lg font-semibold text-white transition-all hover:bg-primary-700 hover:shadow-lg sm:w-auto"

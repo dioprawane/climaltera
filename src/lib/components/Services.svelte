@@ -155,12 +155,20 @@
 							<span class="text-sm {service.color === 'teal' ? 'text-white/80' : 'text-gray-600'}">{service.category}</span>
 						</div>
 
-						<h3 class="mb-4 text-xl font-bold md:text-2xl">
+						<h3 class="mb-2 text-xl font-bold md:text-2xl">
 							{service.title}
 						</h3>
 
+						<p class="mb-2 text-sm leading-relaxed {service.color === 'teal' ? 'text-white/85' : 'text-gray-700'}">
+							{service.description}
+						</p>
+
+						<p class="mb-4 text-xs font-medium italic {service.color === 'teal' ? 'text-white/70' : 'text-gray-500'}">
+							Livrable&nbsp;: {service.deliverable}
+						</p>
+
 						<a
-							href="/projects/{service.slug}"
+							href="/services/{service.slug}"
 							class="inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-medium transition-all {service.color === 'teal'
 								? 'bg-primary-400 text-white hover:bg-primary-300'
 								: 'bg-primary-500 text-white hover:bg-primary-600'}"

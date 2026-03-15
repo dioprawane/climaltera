@@ -1,76 +1,69 @@
 <script lang="ts">
 	const steps = [
 		{
-			icon: 'project',
-			title: 'Choisir un projet',
-			description: 'Parcourez notre sélection de projets d\'action climatique vérifiés, de la reforestation aux initiatives d\'énergie renouvelable.',
-			shape: 'diamond'
+			number: '01',
+			title: 'Collecte de données',
+			description: 'Nous récupérons vos factures, relevés et données d\'activité — aucun tableur complexe à remplir.'
 		},
 		{
-			icon: 'invest',
-			title: 'Investir avec impact',
-			description: 'Allouez vos fonds au projet choisi. Votre investissement aide à financer le projet et génère des rendements basés sur son succès.',
-			shape: 'diamond'
+			number: '02',
+			title: 'Entretiens ciblés',
+			description: 'Un échange d\'1 h avec les responsables clés pour comprendre vos process et vos contraintes.'
 		},
 		{
-			icon: 'track',
-			title: 'Suivre & gagner',
-			description: 'Suivez la progression de votre investissement via l\'application et regardez vos gains augmenter à mesure que le projet atteint ses objectifs.',
-			shape: 'triangle'
+			number: '03',
+			title: 'Analyse technique',
+			description: 'Calcul de vos émissions par poste (énergie, transport, achats) selon les référentiels reconnus.'
+		},
+		{
+			number: '04',
+			title: 'Benchmark simplifié',
+			description: 'Comparaison avec des entreprises de taille et secteur similaires pour situer votre performance.'
+		},
+		{
+			number: '05',
+			title: 'Rapport et restitution',
+			description: 'Un document clair avec graphiques, chiffres clés et recommandations — présenté en 45 min.'
+		},
+		{
+			number: '06',
+			title: 'Feuille de route opérationnelle',
+			description: 'Un plan d\'action priorisé avec calendrier, budget estimé et indicateurs de suivi.'
 		}
 	];
 </script>
 
 <section id="methodology" class="bg-cream px-4 py-20 sm:px-6 lg:px-8">
 	<div class="mx-auto max-w-7xl">
-		<h2 class="mb-16 text-center text-4xl font-bold text-gray-900 md:text-5xl">
+		<h2 class="mb-4 text-center text-4xl font-bold text-gray-900 md:text-5xl">
 			Notre méthodologie
 		</h2>
+		<p class="mx-auto mb-16 max-w-2xl text-center text-lg text-gray-600">
+			6 étapes simples pour passer du diagnostic à l'action — sans mobiliser vos équipes pendant des mois.
+		</p>
 
 		<!-- Separator Line -->
 		<div class="mb-16 h-px w-full bg-gradient-to-r from-transparent via-primary-400 to-transparent"></div>
 
 		<!-- Steps Grid -->
-		<div class="grid gap-12 md:grid-cols-3">
-			{#each steps as step, i}
-				<div class="flex flex-col items-center text-center">
-					<!-- Icon Shape -->
-					<div class="mb-8">
-						{#if step.shape === 'diamond'}
-							<div class="relative flex h-28 w-28 rotate-45 items-center justify-center rounded-2xl bg-accent">
-								<div class="-rotate-45 text-primary-800">
-									{#if step.icon === 'project'}
-										<svg class="h-12 w-12" fill="currentColor" viewBox="0 0 24 24">
-											<path d="M12 2C7 2 3 6 3 11c0 3.5 2 6.5 5 8v3l4-2 4 2v-3c3-1.5 5-4.5 5-8 0-5-4-9-9-9zm0 2a7 7 0 017 7c0 2.5-1.3 4.7-3.3 6l-.7.4V19l-3-1.5-3 1.5v-1.6l-.7-.4C4.3 15.7 3 13.5 3 11a7 7 0 017-7z" />
-										</svg>
-									{:else}
-										<svg class="h-12 w-12" fill="currentColor" viewBox="0 0 24 24">
-											<path d="M12 6l-1.5 3H6l3 2.5-1 3.5 4-2.5 4 2.5-1-3.5 3-2.5h-4.5z" />
-										</svg>
-									{/if}
-								</div>
-							</div>
-						{:else}
-							<div class="flex h-28 w-28 items-center justify-center">
-								<svg viewBox="0 0 100 90" class="h-full w-full">
-									<polygon points="50,5 95,85 5,85" fill="#f59e0b" />
-								</svg>
-								<div class="absolute text-primary-800">
-									<svg class="h-10 w-10" fill="currentColor" viewBox="0 0 24 24">
-										<path d="M12 2l2.4 7.4h7.6l-6 4.6 2.3 7-6.3-4.6-6.3 4.6 2.3-7-6-4.6h7.6z" />
-									</svg>
-								</div>
-							</div>
-						{/if}
-					</div>
+		<div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+			{#each steps as step}
+				<div class="group relative rounded-2xl bg-white p-8 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
+					<!-- Step number -->
+					<span class="mb-4 inline-block text-4xl font-black text-primary-200 transition-colors group-hover:text-primary-400">
+						{step.number}
+					</span>
 
 					<!-- Content -->
-					<h3 class="mb-4 text-xl font-bold text-gray-900">
+					<h3 class="mb-3 text-xl font-bold text-gray-900">
 						{step.title}
 					</h3>
-					<p class="max-w-xs text-gray-600">
+					<p class="text-sm leading-relaxed text-gray-600">
 						{step.description}
 					</p>
+
+					<!-- Accent bar -->
+					<div class="absolute bottom-0 left-8 right-8 h-1 rounded-t-full bg-primary-400 opacity-0 transition-opacity group-hover:opacity-100"></div>
 				</div>
 			{/each}
 		</div>

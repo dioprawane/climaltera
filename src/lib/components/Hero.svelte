@@ -90,31 +90,33 @@
 			<!-- Left Content -->
 			<div>
 				<h1 class="mb-6 text-4xl font-bold leading-tight text-gray-900 md:text-5xl lg:text-6xl">
-					Anticiper les risques
-					<span class="text-primary-500">climatiques</span> au moins
+					Identifiez jusqu'à
 					<span class="relative inline-block">
-						<span class="relative z-10 text-primary-500">12%</span>
+						<span class="relative z-10 text-primary-500">80 %</span>
 						<svg class="absolute -inset-2 -z-0 h-full w-full" viewBox="0 0 100 60" preserveAspectRatio="none">
 							<ellipse cx="50" cy="30" rx="48" ry="25" fill="none" stroke="#a7f3d0" stroke-width="3" />
 						</svg>
 					</span>
-					<span class="text-primary-500">annuellement</span>
+					de vos <span class="text-primary-500">émissions carbone</span> en quelques semaines
 				</h1>
 
 				<p class="mb-8 max-w-lg text-lg text-gray-600">
 					ClimAltera accompagne les PME dans la compréhension, l'anticipation et la maîtrise de leurs enjeux climatiques et environnementaux.
 				</p>
 
-				<!-- Contact -->
+				<!-- CTA -->
 				<div class="flex flex-col items-start gap-4 sm:flex-row">
-					<div class="flex items-center gap-2 rounded-full border border-gray-300 bg-white px-5 py-3">
-						<span class="text-gray-500">(+1) 123 456 789</span>
-					</div>
 					<a
-						href="#contact"
+						href="/devis"
 						class="rounded-full bg-primary-500 px-7 py-3 font-medium text-white transition-all hover:bg-primary-600 hover:shadow-lg"
 					>
-						Nous contacter
+						Demander un diagnostic
+					</a>
+					<a
+						href="/#services"
+						class="rounded-full border border-gray-300 bg-white px-7 py-3 font-medium text-gray-700 transition-all hover:border-primary-400 hover:text-primary-600"
+					>
+						Découvrir nos services
 					</a>
 				</div>
 			</div>
@@ -158,65 +160,57 @@
 
 							<!-- Project Details -->
 							<div class="p-4">
-								<!-- Credits & Funding -->
+								<!-- Tag & Status -->
 								<div class="mb-3 flex items-center justify-between">
-									<div class="flex items-center gap-1 text-sm">
-										<svg class="h-4 w-4 text-primary-500" fill="currentColor" viewBox="0 0 24 24">
-											<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-										</svg>
-										<span class="font-medium text-primary-600">14 crédits</span>
-										<span class="text-gray-400">/ tonne CO₂</span>
-									</div>
-									<span class="text-sm font-medium text-primary-500">88% financé</span>
-								</div>
-
-								<!-- Progress Bar -->
-								<div class="mb-4 h-1.5 w-full overflow-hidden rounded-full bg-gray-200">
-									<div class="h-full w-[88%] rounded-full bg-primary-500"></div>
+									<span class="rounded-full bg-primary-100 px-3 py-1 text-xs font-medium text-primary-700">Diagnostic</span>
+									<span class="flex items-center gap-1 text-xs font-medium text-primary-500">
+										<span class="h-1.5 w-1.5 rounded-full bg-primary-500"></span>
+										En cours
+									</span>
 								</div>
 
 								<!-- Project Title -->
 								<h3 class="mb-4 font-bold text-gray-900">
-									Centrale solaire d'altitude dans les Alpes suisses
+									Bilan carbone PME — Secteur agroalimentaire
 								</h3>
 
 								<!-- Stats Grid -->
 								<div class="grid grid-cols-2 gap-2">
 									<div class="rounded-lg bg-gray-50 p-2.5">
 										<div class="flex items-center gap-1.5">
-											<svg class="h-3.5 w-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<svg class="h-3.5 w-3.5 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+											</svg>
+											<span class="text-sm font-medium text-gray-700">– 35 %</span>
+										</div>
+										<p class="mt-0.5 text-xs text-gray-400">Réduction CO₂</p>
+									</div>
+									<div class="rounded-lg bg-gray-50 p-2.5">
+										<div class="flex items-center gap-1.5">
+											<svg class="h-3.5 w-3.5 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
 											</svg>
-											<span class="text-sm font-medium text-gray-700">2 ans</span>
+											<span class="text-sm font-medium text-gray-700">6 sem.</span>
 										</div>
 										<p class="mt-0.5 text-xs text-gray-400">Durée</p>
 									</div>
 									<div class="rounded-lg bg-gray-50 p-2.5">
 										<div class="flex items-center gap-1.5">
-											<svg class="h-3.5 w-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-											</svg>
-											<span class="text-sm font-medium text-gray-700">8.4%</span>
-										</div>
-										<p class="mt-0.5 text-xs text-gray-400">Intérêt annuel</p>
-									</div>
-									<div class="rounded-lg bg-gray-50 p-2.5">
-										<div class="flex items-center gap-1.5">
-											<svg class="h-3.5 w-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<svg class="h-3.5 w-3.5 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
 											</svg>
-											<span class="text-sm font-medium text-gray-700">750K€</span>
+											<span class="text-sm font-medium text-gray-700">Scope 1-3</span>
 										</div>
-										<p class="mt-0.5 text-xs text-gray-400">Objectif</p>
+										<p class="mt-0.5 text-xs text-gray-400">Périmètre</p>
 									</div>
 									<div class="rounded-lg bg-gray-50 p-2.5">
 										<div class="flex items-center gap-1.5">
-											<svg class="h-3.5 w-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<svg class="h-3.5 w-3.5 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
 											</svg>
-											<span class="text-sm font-medium text-gray-700">12,604</span>
+											<span class="text-sm font-medium text-gray-700">45 salariés</span>
 										</div>
-										<p class="mt-0.5 text-xs text-gray-400">Investisseurs</p>
+										<p class="mt-0.5 text-xs text-gray-400">Effectif</p>
 									</div>
 								</div>
 							</div>

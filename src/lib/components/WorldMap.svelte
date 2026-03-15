@@ -1,113 +1,37 @@
 <script lang="ts">
 import { onMount } from 'svelte';
 
-const regions = [
-	{ name: 'Amérique du Sud', projects: 3 },
-	{ name: 'Europe', projects: 4 },
-	{ name: 'Amérique du Nord', projects: 2 },
-	{ name: 'Afrique', projects: 5 },
-	{ name: 'Asie', projects: 6 },
-	{ name: 'Océanie', projects: 1 },
-	{ name: 'Moyen-Orient', projects: 3 },
+const zones = [
+	{
+		name: 'France',
+		status: 'Zone active',
+		description: 'Accompagnement opérationnel des PME sur tout le territoire métropolitain et outre-mer.',
+		active: true
+	},
+	{
+		name: 'Afrique',
+		status: 'En développement',
+		description: 'Ambition de déploiement à moyen terme pour accompagner les entreprises du continent.',
+		active: false
+	}
 ];
 
 let mapContainer: HTMLElement;
 let mapInstance: any = null;
 
-// Markers avec coordonnées lat/lng
+// Marqueurs réels : France + Afrique
 const markers = [
-	// North America
-	{ name: 'New York', coords: [40.7128, -74.006], style: { fill: '#065f46' } },
-	{ name: 'Toronto', coords: [43.6532, -79.3832], style: { fill: '#065f46' } },
-	{ name: 'Vancouver', coords: [49.2827, -123.1207], style: { fill: '#9ca3af' } },
-	// South America
-	{ name: 'São Paulo', coords: [-23.5505, -46.6333], style: { fill: '#9ca3af' } },
-	{ name: 'Buenos Aires', coords: [-34.6037, -58.3816], style: { fill: '#9ca3af' } },
-	// Europe
 	{ name: 'Paris', coords: [48.8566, 2.3522], style: { fill: '#065f46' } },
-	{ name: 'London', coords: [51.5074, -0.1278], style: { fill: '#065f46' } },
-	{ name: 'Berlin', coords: [52.52, 13.405], style: { fill: '#065f46' } },
-	{ name: 'Madrid', coords: [40.4168, -3.7038], style: { fill: '#065f46' } },
-	// Africa
-	{ name: 'Nairobi', coords: [-1.2921, 36.8219], style: { fill: '#065f46' } },
-	{ name: 'Cape Town', coords: [-33.9249, 18.4241], style: { fill: '#9ca3af' } },
-	// Asia
-	{ name: 'Singapore', coords: [1.3521, 103.8198], style: { fill: '#065f46' } },
-	{ name: 'Tokyo', coords: [35.6762, 139.6503], style: { fill: '#065f46' } },
-	{ name: 'Mumbai', coords: [19.076, 72.8777], style: { fill: '#065f46' } },
-	// Australia
-	{ name: 'Sydney', coords: [-33.8688, 151.2093], style: { fill: '#9ca3af' } },
+	{ name: 'Lyon', coords: [45.764, 4.8357], style: { fill: '#065f46' } },
+	{ name: 'Marseille', coords: [43.2965, 5.3698], style: { fill: '#065f46' } },
+	{ name: 'Bordeaux', coords: [44.8378, -0.5792], style: { fill: '#065f46' } },
+	{ name: 'Nantes', coords: [47.2184, -1.5536], style: { fill: '#065f46' } },
+	{ name: 'Dakar', coords: [14.7167, -17.4677], style: { fill: '#9ca3af' } },
+	{ name: 'Abidjan', coords: [5.3600, -4.0083], style: { fill: '#9ca3af' } },
+	{ name: 'Nairobi', coords: [-1.2921, 36.8219], style: { fill: '#9ca3af' } },
 ];
 
-// Carousel logic (from Services)
-let carouselContainer: HTMLElement;
-let isDragging = $state(false);
-let startX = $state(0);
-let scrollLeft = $state(0);
-let currentSlide = $state(0);
-
-function updateCurrentSlide() {
-	if (carouselContainer) {
-		const cardWidth = carouselContainer.scrollWidth / regions.length;
-		currentSlide = Math.round(carouselContainer.scrollLeft / cardWidth);
-	}
-}
-
-function handleMouseDown(e: MouseEvent) {
-	isDragging = true;
-	startX = e.pageX - carouselContainer.offsetLeft;
-	scrollLeft = carouselContainer.scrollLeft;
-	carouselContainer.style.cursor = 'grabbing';
-	carouselContainer.style.scrollBehavior = 'auto';
-}
-function handleMouseUp() {
-	isDragging = false;
-	carouselContainer.style.cursor = 'grab';
-	carouselContainer.style.scrollBehavior = 'smooth';
-	updateCurrentSlide();
-}
-function handleMouseLeave() {
-	if (isDragging) {
-		isDragging = false;
-		carouselContainer.style.cursor = 'grab';
-		carouselContainer.style.scrollBehavior = 'smooth';
-		updateCurrentSlide();
-	}
-}
-function handleMouseMove(e: MouseEvent) {
-	if (!isDragging) return;
-	e.preventDefault();
-	const x = e.pageX - carouselContainer.offsetLeft;
-	const walk = (x - startX) * 1.5;
-	carouselContainer.scrollLeft = scrollLeft - walk;
-}
-function handleTouchStart(e: TouchEvent) {
-	isDragging = true;
-	startX = e.touches[0].pageX - carouselContainer.offsetLeft;
-	scrollLeft = carouselContainer.scrollLeft;
-	carouselContainer.style.scrollBehavior = 'auto';
-}
-function handleTouchEnd() {
-	isDragging = false;
-	carouselContainer.style.scrollBehavior = 'smooth';
-	updateCurrentSlide();
-}
-function handleTouchMove(e: TouchEvent) {
-	if (!isDragging) return;
-	const x = e.touches[0].pageX - carouselContainer.offsetLeft;
-	const walk = (x - startX) * 1.5;
-	carouselContainer.scrollLeft = scrollLeft - walk;
-}
-function goToSlide(index: number) {
-	if (carouselContainer) {
-		const cardWidth = carouselContainer.scrollWidth / regions.length;
-		carouselContainer.scrollTo({ left: cardWidth * index, behavior: 'smooth' });
-		currentSlide = index;
-	}
-}
-
 onMount(async () => {
-	// Import dynamique côté client uniquement
 	const jsVectorMap = (await import('jsvectormap')).default;
 	await import('jsvectormap/dist/maps/world.js');
 
@@ -115,9 +39,13 @@ onMount(async () => {
 		selector: mapContainer,
 		map: 'world',
 		backgroundColor: 'transparent',
-		zoomButtons: false,
-		zoomOnScroll: false,
-		draggable: false,
+		zoomButtons: true,
+		zoomOnScroll: true,
+		zoomOnScrollSpeed: 3,
+		draggable: true,
+		zoomMax: 12,
+		zoomMin: 1,
+		zoomAnimate: true,
 		regionStyle: {
 			initial: {
 				fill: '#86efac',
@@ -147,7 +75,7 @@ onMount(async () => {
 			tooltip.text(markers[index].name);
 		},
 	});
-	// Ne pas forcer la hauteur, laisser Tailwind gérer
+
 	return () => {
 		if (mapInstance) {
 			mapInstance.destroy();
@@ -156,78 +84,66 @@ onMount(async () => {
 });
 </script>
 
+<style>
+	/* Force le conteneur jsvectormap à remplir le wrapper */
+	.map-wrapper :global(.jvm-container) {
+		width: 100% !important;
+		height: 100% !important;
+	}
+</style>
+
 <section id="locations" class="bg-primary-100 px-4 py-20 sm:px-6 lg:px-8">
-   <div class="mx-auto max-w-7xl">
-	   <!-- Title -->
-	   <div class="mb-12 text-center">
-		   <h2 class="text-3xl font-bold text-gray-900 md:text-4xl lg:text-5xl">
-			   Agissez dans <span class="text-primary-600">45+ pays</span>
-			   <br />
-			   avec des organisations locales
-		   </h2>
-	   </div>
+	<div class="mx-auto max-w-7xl">
+		<!-- Title -->
+		<div class="mb-4 text-center">
+			<h2 class="text-3xl font-bold text-gray-900 md:text-4xl lg:text-5xl">
+				Une expertise pensée pour les entreprises<br />
+				<span class="text-primary-600">en France et en Afrique</span>
+			</h2>
+		</div>
+		<p class="mx-auto mb-14 max-w-2xl text-center text-lg text-gray-600">
+			Nous accompagnons aujourd'hui les PME en France, avec l'ambition d'étendre notre savoir-faire au continent africain.
+		</p>
 
-	   <!-- World Map Container -->
-	   <div class="relative mx-auto mb-16 w-full max-w-7xl">
-		   <div 
-			   bind:this={mapContainer}
-			   class="h-[380px] w-full sm:h-[500px] md:h-[620px] lg:h-[720px]"
-		   ></div>
-	   </div>
+		<!-- World Map -->
+		<div class="relative mx-auto mb-16 w-full max-w-7xl">
+			<div
+				bind:this={mapContainer}
+				class="map-wrapper w-full"
+				style="height: 600px; min-height: 500px;"
+			></div>
 
-	   <!-- Navigation Arrows -->
-	   <div class="mb-8 flex justify-center gap-4">
-		   <button type="button" aria-label="Précédent" onclick={() => goToSlide(currentSlide - 1)} class="h-12 w-12 rounded-full bg-primary-400 text-white text-2xl flex items-center justify-center shadow-md transition hover:bg-primary-500 disabled:opacity-40" disabled={currentSlide === 0}>
-			   &#x2039;
-		   </button>
-		   <button type="button" aria-label="Suivant" onclick={() => goToSlide(currentSlide + 1)} class="h-12 w-12 rounded-full bg-primary-400 text-white text-2xl flex items-center justify-center shadow-md transition hover:bg-primary-500 disabled:opacity-40" disabled={currentSlide >= regions.length - 1}>
-			   &#x203A;
-		   </button>
-	   </div>
+			<!-- Legend -->
+			<div class="absolute bottom-4 left-4 flex flex-col gap-2 rounded-xl bg-white/90 px-4 py-3 text-sm shadow-md backdrop-blur-sm sm:bottom-8 sm:left-8">
+				<div class="flex items-center gap-2">
+					<span class="inline-block h-3 w-3 rounded-full bg-primary-800"></span>
+					<span class="text-gray-700">Zone active</span>
+				</div>
+				<div class="flex items-center gap-2">
+					<span class="inline-block h-3 w-3 rounded-full bg-gray-400"></span>
+					<span class="text-gray-700">En développement</span>
+				</div>
+			</div>
+		</div>
 
-	   <!-- Region Cards Carousel -->
-	   <div class="relative">
-		   <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-		   <div
-			   bind:this={carouselContainer}
-			   class="flex cursor-grab gap-6 overflow-x-auto scroll-smooth py-2"
-			   style="scrollbar-width: none; -ms-overflow-style: none;"
-			   role="listbox"
-			   tabindex="0"
-			   aria-label="Carrousel des régions - Glissez pour naviguer"
-			   onmousedown={handleMouseDown}
-			   onmouseup={handleMouseUp}
-			   onmouseleave={handleMouseLeave}
-			   onmousemove={handleMouseMove}
-			   ontouchstart={handleTouchStart}
-			   ontouchend={handleTouchEnd}
-			   ontouchmove={handleTouchMove}
-		   >
-			   {#each regions as region, i}
-				   <div class="flex min-w-[340px] shrink-0 items-center gap-4 rounded-2xl bg-primary-900 p-6 text-white transition-transform hover:-translate-y-1 select-none md:min-w-[380px]">
-					   <div class="flex h-10 w-10 shrink-0 items-center justify-center">
-						   <svg class="h-7 w-7" fill="currentColor" viewBox="0 0 24 24">
-							   <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-						   </svg>
-					   </div>
-					   <div>
-						   <p class="text-sm text-gray-300">{region.name}</p>
-						   <p class="text-2xl font-bold">{region.projects} Projets</p>
-					   </div>
-				   </div>
-			   {/each}
-		   </div>
-
-		   <!-- Pagination Dots -->
-		   <div class="mt-8 flex justify-center gap-2">
-			   {#each regions as _, i}
-				   <button
-					   class="h-2.5 w-2.5 rounded-full transition-all {i === currentSlide ? 'bg-primary-600' : 'bg-primary-300'}"
-					   aria-label={`Page ${i + 1}`}
-					   onclick={() => goToSlide(i)}
-				   ></button>
-			   {/each}
-		   </div>
-	   </div>
-   </div>
+		<!-- Zone Cards -->
+		<div class="grid gap-6 sm:grid-cols-2">
+			{#each zones as zone}
+				<div class="rounded-2xl {zone.active ? 'bg-primary-900 text-white' : 'bg-white text-gray-900'} p-8 shadow-sm transition-transform hover:-translate-y-1 hover:shadow-lg">
+					<div class="mb-3 flex items-center gap-3">
+						<svg class="h-6 w-6 {zone.active ? 'text-primary-300' : 'text-primary-500'}" fill="currentColor" viewBox="0 0 24 24">
+							<path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+						</svg>
+						<span class="rounded-full px-3 py-0.5 text-xs font-semibold {zone.active ? 'bg-primary-400/30 text-primary-200' : 'bg-primary-100 text-primary-700'}">
+							{zone.status}
+						</span>
+					</div>
+					<h3 class="mb-2 text-2xl font-bold">{zone.name}</h3>
+					<p class="text-sm leading-relaxed {zone.active ? 'text-white/80' : 'text-gray-600'}">
+						{zone.description}
+					</p>
+				</div>
+			{/each}
+		</div>
+	</div>
 </section>
