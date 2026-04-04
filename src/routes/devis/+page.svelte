@@ -1,7 +1,8 @@
 <script lang="ts">
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
-	import { services } from '$lib/data/services';
+	import { services as allServices } from '$lib/data/services';
+	const services = allServices.filter((s) => !s.hidden);
 
 	let name = $state('');
 	let email = $state('');
@@ -11,6 +12,8 @@
 	let need = $state('');
 	let message = $state('');
 	let submitted = $state(false);
+	let sending = $state(false);
+	let error = $state('');
 
 	const sectors = [
 		'Industrie / Manufacturing',
@@ -33,10 +36,46 @@
 		'250+ salariés'
 	];
 
-	function handleSubmit(e: SubmitEvent) {
+	async function handleSubmit(e: SubmitEvent) {
 		e.preventDefault();
-		// TODO: intégrer un vrai backend (Formspree, Resend, etc.)
-		submitted = true;
+		sending = true;
+		error = '';
+
+		// Trouver le libellé du service sélectionné
+		const selectedService = services.find((s) => s.slug === need);
+		const needLabel = selectedService
+			? selectedService.title
+			: need === 'autre'
+				? 'Autre / Je ne sais pas encore'
+				: need;
+
+		try {
+			const res = await fetch('/api/contact', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					name,
+					email,
+					company,
+					sector,
+					companySize,
+					need: needLabel,
+					message: message || '(aucun message)'
+				})
+			});
+
+			const data = await res.json();
+
+			if (res.ok && data.success) {
+				submitted = true;
+			} else {
+				error = data?.error || "Une erreur est survenue. Veuillez réessayer.";
+			}
+		} catch {
+			error = "Impossible d'envoyer le message. Vérifiez votre connexion internet.";
+		} finally {
+			sending = false;
+		}
 	}
 </script>
 
@@ -246,14 +285,37 @@
 						</div>
 					</fieldset>
 
+					<!-- Error message -->
+					{#if error}
+						<div class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+							<p class="flex items-center gap-2">
+								<svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+								</svg>
+								{error}
+							</p>
+						</div>
+					{/if}
+
 					<!-- Submit -->
 					<div class="flex flex-col items-center gap-4 border-t border-gray-100 pt-8 sm:flex-row sm:justify-between">
 						<p class="text-sm text-gray-500">* Champs obligatoires — Vos données ne seront jamais partagées.</p>
 						<button
 							type="submit"
-							class="w-full rounded-full bg-primary-600 px-10 py-3.5 text-lg font-semibold text-white transition-all hover:bg-primary-700 hover:shadow-lg sm:w-auto"
+							disabled={sending}
+							class="w-full rounded-full bg-primary-600 px-10 py-3.5 text-lg font-semibold text-white transition-all hover:bg-primary-700 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
 						>
-							Envoyer ma demande
+							{#if sending}
+								<span class="inline-flex items-center gap-2">
+									<svg class="h-5 w-5 animate-spin" viewBox="0 0 24 24" fill="none">
+										<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+										<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+									</svg>
+									Envoi en cours…
+								</span>
+							{:else}
+								Envoyer ma demande
+							{/if}
 						</button>
 					</div>
 				</form>

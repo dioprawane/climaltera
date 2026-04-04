@@ -1,5 +1,5 @@
 <script lang="ts">
-	import logo from '$lib/assets/logo_climaltera.svg';
+	import logo from '$lib/assets/new_logo_climaltera.png';
 	
 	let mobileMenuOpen = $state(false);
 
@@ -39,7 +39,7 @@
 				href="/devis"
 				class="rounded-full bg-primary-600 px-6 py-2.5 font-medium text-white transition-all hover:bg-primary-700 hover:shadow-lg"
 			>
-				Demander un diagnostic
+				Lancer son diagnostic
 			</a>
 		</div>
 
@@ -80,7 +80,7 @@
 					class="block rounded-full bg-primary-600 px-4 py-2.5 text-center font-medium text-white"
 					onclick={() => (mobileMenuOpen = false)}
 				>
-					Demander un diagnostic
+					Lancer son diagnostic
 				</a>
 			</div>
 		</div>

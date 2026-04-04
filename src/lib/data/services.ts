@@ -29,6 +29,7 @@ export interface Service {
 	detailedDeliverables: string[];
 	estimatedDuration: string;
 	ctaLabel: string;
+	hidden?: boolean;
 }
 
 export const services: Service[] = [
@@ -71,17 +72,18 @@ export const services: Service[] = [
 			'Sensibiliser l\'équipe dirigeante aux enjeux carbone de l\'entreprise'
 		],
 		scope: [
-			'Collecte et analyse des données énergie, déplacements, achats et logistique',
-			'Périmètre scopes 1 & 2 complets, scope 3 ciblé sur les postes matériels',
-			'Entretiens avec les responsables opérationnels clés',
-			'Comparaison avec les moyennes sectorielles disponibles'
+			'Collecte et analyse de vos principales données (énergie, déplacements, achats…)',
+			'Analyse complète de vos émissions directes et indirectes (scopes 1, 2 et 3)',
+			'Échanges avec vos équipes pour comprendre vos activités',
+			'Comparaison avec des références de votre secteur'
 		],
 		detailedDeliverables: [
-			'Rapport de bilan carbone simplifié (PDF, 20-30 pages)',
-			'Tableau de synthèse des émissions par poste et par scope',
-			'Visualisations graphiques exploitables en communication interne',
-			'Liste hiérarchisée des 10 premières actions de réduction',
-			'Restitution orale auprès du comité de direction (1h)'
+			'Rapport clair et synthétique de votre bilan carbone (PDF)',
+			'Vue d\'ensemble de vos émissions par activité',
+			'Visualisations graphiques exploitables pour comprendre et communiquer',
+			'Top 10 des actions prioritaires à mettre en place',
+			'Restitution auprès de votre équipe',
+			'Restitution orale et échanges avec vos équipes'
 		],
 		estimatedDuration: '3 à 5 semaines',
 		ctaLabel: 'Demander mon bilan carbone'
@@ -126,17 +128,17 @@ export const services: Service[] = [
 		],
 		scope: [
 			'Analyse approfondie des résultats du bilan carbone existant',
-			'Étude de faisabilité technico-économique des actions envisagées',
+			'Analyse de faisabilité des actions',
 			'Benchmark des meilleures pratiques sectorielles',
-			'Co-construction du plan avec les responsables opérationnels'
+			'Construction du plan avec vos équipes'
 		],
 		detailedDeliverables: [
-			'Feuille de route de décarbonation détaillée (PDF, 30-40 pages)',
-			'Matrice de priorisation des actions (impact vs. coût vs. faisabilité)',
-			'Calendrier de déploiement sur 3 à 5 ans',
-			'Tableau de bord d\'indicateurs clés de performance (KPI climat)',
-			'Budget prévisionnel des investissements nécessaires',
-			'Restitution et atelier de validation avec l\'équipe dirigeante (2h)'
+			'Feuille de route claire et détaillée (PDF)',
+			'Priorisation des actions selon leur impact et leur coût',
+			'Planning de mise en œuvre sur 3 à 5 ans',
+			'Indicateurs simples pour suivre vos progrès',
+			'Estimation des investissements nécessaires',
+			'Restitution et validation avec votre équipe'
 		],
 		estimatedDuration: '4 à 8 semaines',
 		ctaLabel: 'Élaborer mon plan de réduction'
@@ -145,6 +147,7 @@ export const services: Service[] = [
 		slug: 'diagnostic-environnemental',
 		category: 'Diagnostic',
 		title: 'Diagnostic Environnemental Global',
+		hidden: true,
 		description:
 			'Obtenez une vision complète de vos impacts environnementaux et des axes d\'amélioration.',
 		deliverable: 'Audit des émissions, analyse énergie & ressources, gestion des déchets, recommandations personnalisées.',
@@ -237,19 +240,18 @@ export const services: Service[] = [
 			'Élaborer un plan d\'adaptation priorisé avec des actions concrètes'
 		],
 		scope: [
-			'Analyse des données climatiques locales et projections (horizons 2030, 2050)',
-			'Cartographie des risques par site et par activité',
-			'Entretiens avec les responsables opérationnels et supply chain',
-			'Évaluation de la chaîne d\'approvisionnement (fournisseurs critiques)',
-			'Benchmark des stratégies d\'adaptation sectorielles'
+			'Analyse des données climatiques pour comprendre les risques qui concernent votre activité (aujourd\'hui et demain)',
+			'Identifier les zones et activités les plus exposées',
+			'Entretien avec vos équipes pour comprendre les impacts concrets',
+			'Analyser les risques liés à vos fournisseurs et à votre chaîne d\'approvisionnement',
+			'Mettre en place des stratégies pratiques adaptées à votre secteur'
 		],
 		detailedDeliverables: [
-			'Rapport de vulnérabilité climatique (PDF, 30-50 pages)',
-			'Cartographie des risques par site (cartes et matrices)',
-			'Évaluation financière des scénarios d\'impact (3 scénarios RCP)',
-			'Plan d\'adaptation chiffré et priorisé',
-			'Tableau de bord de suivi des risques climatiques',
-			'Restitution au comité de direction (1h30)'
+			'Un rapport clair des risques climatiques pour votre activité',
+			'Une cartographie des principaux risques (ce qui peut vraiment vous impacter et où)',
+			'Évaluation financière des impacts climatiques sur votre activité',
+			'Plan d\'adaptation priorisé (3 à 5 actions concrètes)',
+			'Un échange de restitution avec votre équipe (explication + questions / réponses)'
 		],
 		estimatedDuration: '5 à 8 semaines',
 		ctaLabel: 'Évaluer ma vulnérabilité climatique'

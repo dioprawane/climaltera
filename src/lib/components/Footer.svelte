@@ -1,7 +1,8 @@
 <script lang="ts">
-	import logo from '$lib/assets/logo_climaltera.svg';
+	import logo from '$lib/assets/new_logo_climaltera.png';
 	import bgImage from '$lib/assets/image.png';
-	import { services } from '$lib/data/services';
+	import { services as allServices } from '$lib/data/services';
+	const services = allServices.filter((s) => !s.hidden);
 
 	const legalLinks = [
 		{ label: 'Mentions légales', href: '/mentions-legales' },

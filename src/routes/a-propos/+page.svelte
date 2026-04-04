@@ -364,7 +364,7 @@
 					href="/devis"
 					class="rounded-full bg-primary-600 px-8 py-3.5 text-lg font-semibold text-white transition-all hover:bg-primary-700 hover:shadow-lg"
 				>
-					Demander un diagnostic
+					Lancer son diagnostic
 				</a>
 				<a
 					href="/#services"

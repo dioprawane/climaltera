@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { services } from '$lib/data/services';
+	import { services as allServices } from '$lib/data/services';
+
+	const services = allServices.filter((s) => !s.hidden);
 
 	// Drag scroll state
 	let carouselContainer: HTMLElement;
