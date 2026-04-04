@@ -1,27 +1,23 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import nodemailer from 'nodemailer';
-import {
-	SMTP_HOST,
-	SMTP_PORT,
-	SMTP_USER,
-	SMTP_PASS,
-	CONTACT_EMAIL
-} from '$env/static/private';
+import { env } from '$env/dynamic/private';
 
-const transporter = nodemailer.createTransport({
-	host: SMTP_HOST,
-	port: Number(SMTP_PORT),
-	secure: Number(SMTP_PORT) === 465,
-	auth: {
-		user: SMTP_USER,
-		pass: SMTP_PASS
-	},
-	tls: {
-		rejectUnauthorized: false
-	},
-	connectionTimeout: 10000
-});
+function getTransporter() {
+	return nodemailer.createTransport({
+		host: env.SMTP_HOST,
+		port: Number(env.SMTP_PORT),
+		secure: Number(env.SMTP_PORT) === 465,
+		auth: {
+			user: env.SMTP_USER,
+			pass: env.SMTP_PASS
+		},
+		tls: {
+			rejectUnauthorized: false
+		},
+		connectionTimeout: 10000
+	});
+}
 
 export const POST: RequestHandler = async ({ request }) => {
 	try {
@@ -81,9 +77,10 @@ export const POST: RequestHandler = async ({ request }) => {
 			</div>
 		`;
 
+		const transporter = getTransporter();
 		await transporter.sendMail({
-			from: `"ClimAltera — Site web" <${SMTP_USER}>`,
-			to: CONTACT_EMAIL,
+			from: `"ClimAltera — Site web" <${env.SMTP_USER}>`,
+			to: env.CONTACT_EMAIL,
 			replyTo: email,
 			subject: `Nouvelle demande de devis — ${company || name}`,
 			html: htmlContent
